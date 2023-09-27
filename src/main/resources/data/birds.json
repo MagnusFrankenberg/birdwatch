@@ -1,0 +1,66 @@
+[
+  {
+    "speices": "Kungsörn",
+    "type": "Rovfågel"
+  },
+  {
+    "speices": "Havsörn",
+    "type": "Rovfågel"
+  },
+  {
+    "speices": "Duvhök",
+    "type": "Rovfågel"
+  },
+  {
+    "speices": "Lärkfalk",
+    "type": "Rovfågel"
+  },
+  {
+    "speices": "Rödhake",
+    "type": "Tätting"
+  },
+  {
+    "speices": "Pilfink",
+    "type": "Tätting"
+  },
+  {
+    "speices": "Talgoxe",
+    "type": "Tätting"
+  },
+  {
+    "speices": "Koltrast",
+    "type": "Tätting"
+  },
+  {
+    "speices": "Knölsvan",
+    "type": "Vattenfågel"
+  },
+  {
+    "speices": "Gräsand",
+    "type": "Vattenfågel"
+  },
+  {
+    "speices": "Vigg",
+    "type": "Vattenfågel"
+  },
+  {
+    "speices": "Bläsand",
+    "type": "Vattenfågel"
+  },
+  {
+    "speices": "Kejsarpingvin",
+    "type": "Pingvin"
+  },
+  {
+    "speices": "Gulögdpingvin",
+    "type": "Pingvin"
+  },
+  {
+    "speices": "Adélipingvin",
+    "type": "Pingvin"
+  },
+  {
+    "speices": "Stenknäckspingvin",
+    "type": "Pingvin"
+  }
+]

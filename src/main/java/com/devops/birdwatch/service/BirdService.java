@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,25 @@ public class BirdService {
     }
 
     public ResponseEntity<String> deleteBird(Long id) {
-        
+        try {
+            if (!birdRepository.existsById(id)) {
+                return new ResponseEntity<>("Could not find Bird with id " + id, HttpStatus.NOT_FOUND);
+            } else {
+                birdRepository.deleteById(id);
+                return new ResponseEntity<>("Bird with id " + id + " deleted", HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Failed to delete", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String updateBird(Bird bird, Long id) {
+        if(!birdRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bird not found");
+        }
+        birdRepository.save(bird);
+        return "Bird with id " + id + " successfully updated";
     }
 }
 

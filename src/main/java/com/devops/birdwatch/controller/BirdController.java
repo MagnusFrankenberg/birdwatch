@@ -15,7 +15,7 @@ public class BirdController {
     @Autowired
     BirdService birdService;
 
-    @GetMapping("allBirds")
+    @GetMapping("all")
     public ResponseEntity<List<Bird>> getAllBirds(){
         return birdService.getAllBirds();
     }
@@ -33,6 +33,11 @@ public class BirdController {
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteBird(@PathVariable Long id){
         return birdService.deleteBird(id);
+    }
+
+    @PutMapping("update/{id}")
+    public String updateBird(@RequestBody Bird bird, @PathVariable Long id){
+        return birdService.updateBird(bird, id);
     }
 
 }

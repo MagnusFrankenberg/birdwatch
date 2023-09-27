@@ -1,0 +1,48 @@
+###
+GET http://localhost:8080/bird/all
+
+###
+GET http://localhost:8080/bird/type/Rovfågel
+
+###
+POST http://localhost:8080/observation/add
+Content-Type: application/json
+
+{
+  "observationDate": "2023-09-25",
+  "location": "Ingarö",
+  "country": "Sweden",
+  "speices": "Kungsörn",
+  "email": "anna.andersson@example.se"
+}
+
+
+###
+POST http://localhost:8080/bird/add
+Content-Type: application/json
+
+{
+  "speices": "Pilgrimsfalk",
+  "type": "Rovfågel"
+}
+
+###
+DELETE http://localhost:8080/bird/delete/4
+
+
+
+###
+GET http://localhost:8080/birdwatcher/all
+
+###
+POST http://localhost:8080/birdwatcher/add
+Content-Type: application/json
+
+{
+  "firstName": "Maggan",
+  "lastName": "Magnusson",
+  "email": "maggan.magnusson@example.se"
+}
+
+###
+DELETE http://localhost:8080/birdwatcher/delete/1

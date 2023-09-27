@@ -1,0 +1,102 @@
+[
+  {
+    "firstName": "Erik",
+    "lastName": "Johansson",
+    "email": "erik.johansson@example.se"
+  },
+  {
+    "firstName": "Anna",
+    "lastName": "Andersson",
+    "email": "anna.andersson@example.se"
+  },
+  {
+    "firstName": "Lars",
+    "lastName": "Larsson",
+    "email": "lars.larsson@example.se"
+  },
+  {
+    "firstName": "Emma",
+    "lastName": "Eriksson",
+    "email": "emma.eriksson@example.se"
+  },
+  {
+    "firstName": "Karin",
+    "lastName": "Karlsson",
+    "email": "karin.karlsson@example.se"
+  },
+  {
+    "firstName": "Per",
+    "lastName": "Persson",
+    "email": "per.persson@example.se"
+  },
+  {
+    "firstName": "Maria",
+    "lastName": "Magnusson",
+    "email": "maria.magnusson@example.se"
+  },
+  {
+    "firstName": "Olof",
+    "lastName": "Olsson",
+    "email": "olof.olsson@example.se"
+  },
+  {
+    "firstName": "Sara",
+    "lastName": "Svensson",
+    "email": "sara.svensson@example.se"
+  },
+  {
+    "firstName": "Katarina",
+    "lastName": "Kjellberg",
+    "email": "katarina.kjellberg@example.se"
+  },
+  {
+    "firstName": "Nils",
+    "lastName": "Nilsson",
+    "email": "nils.nilsson@example.se"
+  },
+  {
+    "firstName": "Eva",
+    "lastName": "Englund",
+    "email": "eva.englund@example.se"
+  },
+  {
+    "firstName": "Mikael",
+    "lastName": "Mattsson",
+    "email": "mikael.mattsson@example.se"
+  },
+  {
+    "firstName": "Elisabeth",
+    "lastName": "Lind",
+    "email": "elisabeth.lind@example.se"
+  },
+  {
+    "firstName": "Björn",
+    "lastName": "Berg",
+    "email": "bjorn.berg@example.se"
+  },
+  {
+    "firstName": "Johanna",
+    "lastName": "Johansdotter",
+    "email": "johanna.johansdotter@example.se"
+  },
+  {
+    "firstName": "Anders",
+    "lastName": "Ahl",
+    "email": "anders.ahl@example.se"
+  },
+  {
+    "firstName": "Susanne",
+    "lastName": "Ström",
+    "email": "susanne.strom@example.se"
+  },
+  {
+    "firstName": "Gustaf",
+    "lastName": "Gran",
+    "email": "gustaf.gran@example.se"
+  },
+  {
+    "firstName": "Malin",
+    "lastName": "Malm",
+    "email": "malin.malm@example.se"
+  }
+]

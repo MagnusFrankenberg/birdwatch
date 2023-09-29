@@ -8,11 +8,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      MYSQL_HOST: PostgresDB
-      MYSQL_PORT: 5432
-      MYSQL_DB: questiondb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+      MYSQL_HOST: MysqlDB
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: birdwatchdb
+      MYSQL_USER: birduser
+      MYSQL_PASSWORD: birdpassword
     command: [ "java", "-jar", "app.jar" ]
     depends_on:
       MysqlDB:
@@ -26,9 +26,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DB: questiondb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+      MYSQL_DATABASE: birdwatchdb
+      MYSQL_USER: birduser
+      MYSQL_PASSWORD: birdpassword
+      MYSQL_ROOT_PASSWORD: rootpw123
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 45s

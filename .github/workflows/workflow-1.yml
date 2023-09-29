@@ -16,6 +16,22 @@ jobs:
   # Build jar, run unit tests and upload jar as artifact
   build:
     runs-on: ubuntu-latest
+
+    #Set up MySQL services:
+    services:
+      MysqlDB:
+        image: mysql/mysql-server:8.0.25
+        env:
+          MYSQL_ROOT_PASSWORD: rootpw123
+          MYSQL_DATABASE: birdwatchdb
+          MYSQL_USER: birduser
+          MYSQL_PASSWORD: birdpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+
+
     steps:
 
       # Checks-out the repository
@@ -46,6 +62,11 @@ jobs:
       # Run build and run unit tests
       - name: Run build
         run: ./gradlew build
+        env:
+          MYSQL_HOST: MysqlDB
+          SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:birdwatchdb}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+          SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
+          SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
 
       # Upload artifact to use in the next job
       - name: upload artifact

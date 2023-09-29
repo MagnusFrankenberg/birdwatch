@@ -63,8 +63,8 @@ jobs:
       - name: Run build
         run: ./gradlew build
         env:
-          #MYSQL_HOST: MysqlDB
-          SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:birdwatchdb}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+          #SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:birdwatchdb}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:${MYSQL_PORT:3306}/${MYSQL_DATABASE:birdwatchdb}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
           SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
           SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
 

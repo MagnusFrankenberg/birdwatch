@@ -35,9 +35,5 @@ public class BirdController {
         return birdService.deleteBird(id);
     }
 
-    @PutMapping("update/{id}")
-    public String updateBird(@RequestBody Bird bird, @PathVariable Long id){
-        return birdService.updateBird(bird, id);
-    }
 
 }

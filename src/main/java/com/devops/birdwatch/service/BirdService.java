@@ -58,13 +58,5 @@ public class BirdService {
         }
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String updateBird(Bird bird, Long id) {
-        if(!birdRepository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bird not found");
-        }
-        birdRepository.save(bird);
-        return "Bird with id " + id + " successfully updated";
-    }
 }
 

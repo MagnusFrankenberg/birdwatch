@@ -6,7 +6,7 @@ on:
       - master
 
 
-# Set environment variables for pushing Docker image to GitHub Container Registry
+# Set environment variables for pushing Docker image to GitHub Container Registry .
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}

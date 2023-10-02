@@ -38,6 +38,39 @@ tasks.withType<Test> {
 	}
 }
 
+sourceSets {
+	create("intTest") {
+		compileClasspath += sourceSets.main.get().output
+		runtimeClasspath += sourceSets.main.get().output
+	}
+}
 
+val intTestImplementation by configurations.getting {
+	extendsFrom(configurations.implementation.get())
+}
+val intTestRuntimeOnly by configurations.getting
+
+configurations["intTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+dependencies {
+	intTestImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+	intTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	intTestImplementation("io.rest-assured:rest-assured:5.3.2")
+}
+
+val integrationTest = task<Test>("integrationTest") {
+	description = "Runs integration tests."
+	group = "verification"
+
+	testClassesDirs = sourceSets["intTest"].output.classesDirs
+	classpath = sourceSets["intTest"].runtimeClasspath
+	shouldRunAfter("test")
+
+	useJUnitPlatform()
+
+	testLogging {
+		events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
+	}
+}
 
 

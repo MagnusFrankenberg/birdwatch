@@ -1,0 +1,59 @@
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+public class BirdServiceIntegrationTest {
+
+    @Autowired
+    private BirdService birdService;
+
+    @Autowired
+    private BirdRepository birdRepository;
+
+    @BeforeEach
+    public void setUp() {
+        // Clean up the database before each test
+        birdRepository.deleteAll();
+    }
+
+    @Test
+    public void testAddBird() {
+        Bird bird = new Bird();
+        bird.setType("Sparrow");
+        ResponseEntity<String> response = birdService.addBird(bird);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isEqualTo("Successfully added new Bird!");
+    }
+
+    @Test
+    public void testGetAllBirds() {
+        Bird bird1 = new Bird();
+        bird1.setType("Sparrow");
+        birdRepository.save(bird1);
+
+        Bird bird2 = new Bird();
+        bird2.setType("Crow");
+        birdRepository.save(bird2);
+
+        ResponseEntity<List<Bird>> response = birdService.getAllBirds();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).hasSize(2);
+    }
+
+
+
+}

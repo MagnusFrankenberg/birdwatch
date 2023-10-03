@@ -148,7 +148,6 @@ jobs:
 
   # Build Docker image and push to GitHub Container Registry
   publish:
-    if: github.ref == 'refs/heads/master || github.event_name == 'pull_request'
     needs: buildJar
     runs-on: ubuntu-latest
 

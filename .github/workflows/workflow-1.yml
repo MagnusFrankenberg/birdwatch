@@ -57,15 +57,8 @@ jobs:
           SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
           SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
 
-      # Upload artifact to use in the next job
-      - name: upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: jar
-          path: build/libs/birdwatch-0.0.1-SNAPSHOT.jar
 
-
-  # Download jar and run integration tests
+  # Run integration tests
   integrationtests:
 
     needs: unittest
@@ -107,16 +100,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
-
-      # Download jar from previous job
-      - name: download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: jar
-
-      # Run jar in the background to be able to run integration tests in the next step
-      - name: run jar
-        run: java -jar birdwatch-0.0.1-SNAPSHOT.jar &
 
       # Run integration tests
       - name: run integration test

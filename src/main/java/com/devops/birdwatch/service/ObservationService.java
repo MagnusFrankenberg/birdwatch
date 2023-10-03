@@ -7,20 +7,22 @@ import com.devops.birdwatch.model.ObservationTemplate;
 import com.devops.birdwatch.repository.BirdRepository;
 import com.devops.birdwatch.repository.BirdWatcherRepository;
 import com.devops.birdwatch.repository.ObservationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class ObservationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ObservationService.class);
 
     @Autowired
     ObservationRepository observationRepository;
@@ -35,10 +37,11 @@ public class ObservationService {
         Observation observation;
 
 
+
         try {
             birdOptional = birdRepository.findBySpeices(template.getSpeices());
             if (!birdOptional.isPresent()) {
-                return new ResponseEntity<>("Bird speices not found, please register bird speices", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Bird speices not found, please register bird speices", HttpStatus.NOT_FOUND);
             }
             birdWatcherOptional = birdWatcherRepository.findByEmail(template.getEmail());
             if (!birdWatcherOptional.isPresent()) {
@@ -57,13 +60,27 @@ public class ObservationService {
         }
     }
 
+    public ResponseEntity<Observation> getObservationById(Long id) {
+        Optional<Observation> optionalObservation = observationRepository.findById(id);
+
+        if (optionalObservation.isPresent()) {
+            return new ResponseEntity<>(optionalObservation.get(), HttpStatus.OK);
+        } else {
+            logger.warn("No observation found for ID: {}", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
     public ResponseEntity<List<Observation>> getAllObservations() {
         try{
             return new ResponseEntity<>(observationRepository.findAll(), HttpStatus.OK);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("Failed to retrieve all observations", e);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
+
+
 }

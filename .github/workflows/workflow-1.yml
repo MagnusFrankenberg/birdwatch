@@ -60,7 +60,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
 
 
-  # Run integration tests
+  # Build jar & run integration tests
   integrationtests:
 
     needs: unittest
@@ -126,36 +126,6 @@ jobs:
         run: ./gradlew integrationTest
 
 
-
-  # Build Jar
-  buildJar:
-    needs: integrationtests
-    runs-on: ubuntu-latest
-
-    steps:
-
-      # Checks-out the repository
-      - uses: actions/checkout@v3
-
-      # Set up JDK 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'corretto'
-
-      # Grant execute permission for gradlew
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      # Run build, exclude testing since already done (which also makes it possible to build without MySQL service running)
-      - name: build
-        run: ./gradlew build -x test
-        env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/birdwatchdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-          SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
-          SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
-
       # Upload artifact to use in the next job
       - name: upload artifact
         uses: actions/upload-artifact@v3
@@ -164,9 +134,11 @@ jobs:
           path: build/libs/birdwatch-0.0.1-SNAPSHOT.jar
 
 
+
+
   # Build Docker image and push to GitHub Container Registry
   publish:
-    needs: buildJar
+    needs: integrationtests
     runs-on: ubuntu-latest
 
     # Set output variable for tag, to be used in the next job
@@ -237,7 +209,7 @@ jobs:
           echo "Deploying to Production"
           echo ${{needs.publish.outputs.tag}}
 
-    # Fake deployment job to test environment, running for push events to any branch other than master
+    # Fake deployment job to test environment, any branch other than master
   deployToTest:
     if: github.ref != 'refs/heads/master' && github.event_name == 'push'
     needs: publish

@@ -112,21 +112,6 @@ jobs:
     needs: integrationtests
     runs-on: ubuntu-latest
 
-    #Set up MySQL services:
-    services:
-      MysqlDB:
-        image: mysql/mysql-server:8.0.25
-        env:
-          MYSQL_ROOT_PASSWORD: rootpw123
-          MYSQL_DATABASE: birdwatchdb
-          MYSQL_USER: birduser
-          MYSQL_PASSWORD: birdpassword
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-
-
     steps:
 
       # Checks-out the repository

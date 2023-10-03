@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
     branches:
-      - main
+      - master
 
 
 # Set environment variables for pushing Docker image to GitHub Container Registry .
@@ -30,7 +30,6 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
 
 
     steps:
@@ -128,7 +127,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Run build, exclude testing since already done
+      # Run build, exclude testing since already done (which also makes it possible to build without MySQL service running)
       - name: build
         run: ./gradlew build -x test
         env:

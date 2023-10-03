@@ -126,6 +126,7 @@ jobs:
 
   # Build Jar
   buildJar:
+    needs: integrationtests
     runs-on: ubuntu-latest
 
     #Set up MySQL services:

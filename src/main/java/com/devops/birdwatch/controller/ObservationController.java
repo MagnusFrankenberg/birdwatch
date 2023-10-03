@@ -21,6 +21,11 @@ public class ObservationController {
         return observationService.addObservation(observationTemplate);
     }
 
+    @GetMapping("id/{id}")
+    public ResponseEntity<Observation> getObservationById(@PathVariable Long id){
+        return observationService.getObservationById(id);
+    }
+
     @GetMapping("all")
     public ResponseEntity<List<Observation>> getAllObservations(){
         return observationService.getAllObservations();

@@ -1,7 +1,10 @@
-name: Build, test and publish Docker image
+name: CI/CD pipeline test & production
 
 on:
   push:
+    branches:
+      - master
+      - '*'
   pull_request:
     branches:
       - master
@@ -145,6 +148,7 @@ jobs:
 
   # Build Docker image and push to GitHub Container Registry
   publish:
+    if: github.ref == 'refs/heads/master || github.event_name == 'pull_request'
     needs: buildJar
     runs-on: ubuntu-latest
 
@@ -205,12 +209,24 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  # Fake deployment job
-  deploy:
+  # Fake deployment job to production environment
+  deployToProduction:
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     needs: publish
     runs-on: ubuntu-latest
-
-    # Use output variable from previous job to display image name and tag
     steps:
-      - name: Echo deployment image
-        run: echo ${{needs.publish.outputs.tag}}
+      - name: Deploy master to Production
+        run: |
+          echo "Deploying to Production"
+          echo ${{needs.publish.outputs.tag}}
+
+    # Fake deployment job to test environment, running for push events to any branch other than master
+  deployToTest:
+    if: github.ref != 'refs/heads/master' && github.event_name == 'push'
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Test
+        run: |
+          echo "Deploying to Test"
+          echo ${{needs.publish.outputs.tag}}

@@ -6,15 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BirdService {
-
+    private static final Logger logger = LoggerFactory.getLogger(ObservationService.class);
     @Autowired
     BirdRepository birdRepository;
 
@@ -58,5 +59,15 @@ public class BirdService {
         }
     }
 
+
+    public ResponseEntity<Bird> getBirdById(Long id) {
+        Optional<Bird> optionalBird = birdRepository.findById(id);
+        if(optionalBird.isPresent()){
+            return new ResponseEntity<>(optionalBird.get(),HttpStatus.OK);
+        }else{
+            logger.warn("No Bird found for ID: {}", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

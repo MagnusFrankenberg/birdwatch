@@ -14,8 +14,8 @@ env:
 
 jobs:
 
-  # Build jar, run unit tests and upload jar as artifact
-  build:
+  # run unit tests
+  unittest:
     runs-on: ubuntu-latest
 
     #Set up MySQL services:
@@ -31,6 +31,51 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+
+
+    steps:
+
+      # Checks-out the repository
+      - uses: actions/checkout@v3
+
+      # Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      # Grant execute permission for gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Run unit tests
+      - name: Run UnitTests
+        run: ./gradlew test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/birdwatchdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+          SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
+          SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
+
+
+  # Run integration tests
+  integrationtests:
+
+    needs: unittest
+    runs-on: ubuntu-latest
+
+    #Set up MySQL services:
+    services:
+      MysqlDB:
+        image: mysql/mysql-server:8.0.25
+        env:
+          MYSQL_ROOT_PASSWORD: rootpw123
+          MYSQL_DATABASE: birdwatchdb
+          MYSQL_USER: birduser
+          MYSQL_PASSWORD: birdpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
 
     steps:
@@ -56,13 +101,36 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      # Run integration tests
+      - name: run integration test
+        run: ./gradlew integrationTest
+
+
+
+  # Build Jar
+  buildJar:
+    needs: integrationtests
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checks-out the repository
+      - uses: actions/checkout@v3
+
+      # Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
       # Grant execute permission for gradlew
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Run build and run unit tests
-      - name: Run build
-        run: ./gradlew build
+      # Run build, exclude testing since already done
+      - name: build
+        run: ./gradlew build -x test
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/birdwatchdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
           SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
@@ -76,67 +144,9 @@ jobs:
           path: build/libs/birdwatch-0.0.1-SNAPSHOT.jar
 
 
-  # Download jar and run integration tests
-  integrationtests:
-
-    needs: build
-    runs-on: ubuntu-latest
-
-    #Set up MySQL services:
-    services:
-      MysqlDB:
-        image: mysql/mysql-server:8.0.25
-        env:
-          MYSQL_ROOT_PASSWORD: rootpw123
-          MYSQL_DATABASE: birdwatchdb
-          MYSQL_USER: birduser
-          MYSQL_PASSWORD: birdpassword
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-
-    steps:
-
-      # Checks-out the repository
-      - uses: actions/checkout@v3
-
-      # Cache the gradle dependencies and wrapper to speed up the build
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
-      # Set up JDK 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'corretto'
-
-      # Download jar from previous job
-      - name: download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: jar
-
-      # Run jar in the background to be able to run integration tests in the next step
-      - name: run jar
-        run: java -jar birdwatch-0.0.1-SNAPSHOT.jar &
-
-      # Run integration tests
-      - name: run integration test
-        run: ./gradlew integrationTest
-
-
   # Build Docker image and push to GitHub Container Registry
   publish:
-    needs: integrationtests
+    needs: buildJar
     runs-on: ubuntu-latest
 
     # Set output variable for tag, to be used in the next job

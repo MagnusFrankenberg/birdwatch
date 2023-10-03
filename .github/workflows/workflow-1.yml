@@ -118,7 +118,7 @@ jobs:
 
       # Run jar in the background to be able to run integration tests in the next step
       - name: run jar
-        run:  java -jar birdwatch-0.0.1-SNAPSHOT.jar &
+        run:  java -jar ./build/libs/birdwatch-0.0.1-SNAPSHOT.jar &
 
 
       # Run integration tests (some need a running app, some don´t)

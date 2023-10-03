@@ -2,8 +2,7 @@ name: Build, test and publish Docker image
 
 on:
   push:
-    branches:
-      - master
+  pull_request:
 
 
 # Set environment variables for pushing Docker image to GitHub Container Registry .

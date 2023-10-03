@@ -14,3 +14,5 @@ docker run --name MysqlDB \
 3. Start tests:
 Go to projectfolder /birdwatch
 ./gradlew test
+
+test

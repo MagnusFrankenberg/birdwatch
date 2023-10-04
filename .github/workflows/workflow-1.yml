@@ -26,10 +26,10 @@ jobs:
       MysqlDB:
         image: mysql/mysql-server:8.0.25
         env:
-          MYSQL_ROOT_PASSWORD: rootpw123
-          MYSQL_DATABASE: birdwatchdb
-          MYSQL_USER: birduser
-          MYSQL_PASSWORD: birdpassword
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -56,8 +56,8 @@ jobs:
         run: ./gradlew test
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/birdwatchdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-          SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
-          SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
 
   # run integration tests (@SpringBootTest)
@@ -71,10 +71,10 @@ jobs:
       MysqlDB:
         image: mysql/mysql-server:8.0.25
         env:
-          MYSQL_ROOT_PASSWORD: rootpw123
-          MYSQL_DATABASE: birdwatchdb
-          MYSQL_USER: birduser
-          MYSQL_PASSWORD: birdpassword
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -127,10 +127,10 @@ jobs:
       MysqlDB:
         image: mysql/mysql-server:8.0.25
         env:
-          MYSQL_ROOT_PASSWORD: rootpw123
-          MYSQL_DATABASE: birdwatchdb
-          MYSQL_USER: birduser
-          MYSQL_PASSWORD: birdpassword
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -169,8 +169,8 @@ jobs:
         run: ./gradlew build -x test
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/birdwatchdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-          SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:birduser}
-          SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:birdpassword}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.MYSQL_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
       # Run jar in the background to be able to run integration tests in the next step
       - name: run jar

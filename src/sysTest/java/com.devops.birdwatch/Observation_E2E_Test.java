@@ -76,28 +76,4 @@ public class Observation_E2E_Test {
                 .body(equalTo("Successfully added new Observation!"));
     }
 
-    /*
-    not working, probably need to delete observation first due to dependencies
-    //Deleting testentries
-    @AfterEach
-    public void cleanUp() {
-        if (savedBird != null) {
-            given()
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .delete("/bird/delete/" + savedBird.getId())
-                    .then()
-                    .statusCode(200);
-        }
-
-        if (savedBirdWatcher != null) {
-            given()
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .delete("/birdwatcher/delete/" + savedBirdWatcher.getId())
-                    .then()
-                    .statusCode(200);
-        }
-
-    }*/
 }

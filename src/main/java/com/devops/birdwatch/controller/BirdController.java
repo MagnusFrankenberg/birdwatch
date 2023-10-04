@@ -20,6 +20,11 @@ public class BirdController {
         return birdService.getAllBirds();
     }
 
+    @GetMapping("id/{id}")
+    public ResponseEntity<Bird> getBirdById(@PathVariable Long id){
+        return birdService.getBirdById(id);
+    }
+
     @GetMapping("type/{type}")
     public ResponseEntity<List<Bird>> getBirdsByType(@PathVariable String type){
         return birdService.getBirdsByType(type);

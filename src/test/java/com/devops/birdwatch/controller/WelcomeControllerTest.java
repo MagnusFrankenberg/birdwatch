@@ -9,7 +9,6 @@ class WelcomeControllerTest {
     WelcomeController welcomeController = new WelcomeController();
     @Test
     void welcome() {
-
         assertEquals("Welcome to BirdWatch!",welcomeController.welcome());
     }
 }

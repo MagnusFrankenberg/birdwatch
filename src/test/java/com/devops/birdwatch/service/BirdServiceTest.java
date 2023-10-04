@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class BirdServiceTest {
@@ -56,11 +57,13 @@ public class BirdServiceTest {
     @Test
     public void testAddBird() {
         Bird bird = new Bird();
-        when(birdRepository.save(bird)).thenReturn(bird);
+        Bird savedBird = new Bird();
+        when(birdRepository.save(bird)).thenReturn(savedBird);
 
-        ResponseEntity<String> response = birdService.addBird(bird);
+        ResponseEntity<Bird> response = birdService.addBird(bird);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertTrue(response.getBody() instanceof Bird);
     }
 
     @Test

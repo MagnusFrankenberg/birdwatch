@@ -44,15 +44,16 @@ public class BirdWatcherControllerTest {
     @Test
     public void testAddBirdWatcher() throws Exception {
         BirdWatcher birdWatcher = new BirdWatcher();
+        BirdWatcher savedBirdWatcher = new BirdWatcher();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        when(birdWatcherService.addBirdWatcher(birdWatcher)).thenReturn(new ResponseEntity<>("New BirdWatcher added successfully!", HttpStatus.CREATED));
+        when(birdWatcherService.addBirdWatcher(birdWatcher)).thenReturn(new ResponseEntity<>(savedBirdWatcher, HttpStatus.CREATED));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/birdwatcher/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(birdWatcher)))
                 .andExpect(status().isCreated())
-                .andExpect(content().string("New BirdWatcher added successfully!"));
+                .andExpect(content().json(objectMapper.writeValueAsString(savedBirdWatcher)));
     }
 
     @Test

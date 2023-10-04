@@ -48,7 +48,7 @@ public class BirdWatcherServiceTest {
         birdWatcher.setEmail("test@example.com");
         when(birdWatcherRepository.findByEmail(birdWatcher.getEmail())).thenReturn(Optional.empty());
 
-        ResponseEntity<String> response = birdWatcherService.addBirdWatcher(birdWatcher);
+        ResponseEntity<BirdWatcher> response = birdWatcherService.addBirdWatcher(birdWatcher);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(birdWatcherRepository).save(birdWatcher);
@@ -60,7 +60,7 @@ public class BirdWatcherServiceTest {
         birdWatcher.setEmail("test@example.com");
         when(birdWatcherRepository.findByEmail(birdWatcher.getEmail())).thenReturn(Optional.of(birdWatcher));
 
-        ResponseEntity<String> response = birdWatcherService.addBirdWatcher(birdWatcher);
+        ResponseEntity<BirdWatcher> response = birdWatcherService.addBirdWatcher(birdWatcher);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }

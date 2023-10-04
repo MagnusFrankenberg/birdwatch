@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 public class Observation_E2E_Test {
 
@@ -20,20 +21,21 @@ public class Observation_E2E_Test {
     }
 
     @Test
-    public void E2EObservationTest(){
+    public void E2E_addObservationAndExpect201(){
 
         //Creating a bird
         Bird bird = new Bird();
         bird.setSpeices("FågelArt1");
         bird.setType("FågelTyp1");
 
-         given()
+         Bird savedBird = given()
                 .contentType(ContentType.JSON)
                 .body(bird)
                 .when()
                 .post("/bird/add")
                 .then()
-                .statusCode(201);
+                .statusCode(201)
+                 .extract().as(Bird.class);
 
 
         //Creating a birdWatcher
@@ -42,21 +44,32 @@ public class Observation_E2E_Test {
         birdWatcher.setLastName("Efternamn1");
         birdWatcher.setEmail("epost@adress1.se");
 
-        given()
+        BirdWatcher savedBirdWatcher = given()
                 .contentType(ContentType.JSON)
                 .body(birdWatcher)
                 .when()
                 .post("/birdWatcher/add")
                 .then()
-                .statusCode(201);
+                .statusCode(201)
+                .extract().as(BirdWatcher.class);
 
 
-        //Create an Observation
+        //Creating an Observation
         Observation observation = new Observation();
         observation.setObservationDate(LocalDate.parse("2022-11-07"));
         observation.setLocation("Location1");
         observation.setCountry("Country1");
+        observation.setBird(savedBird);
+        observation.setBirdWatcher(savedBirdWatcher);
 
+         given()
+                .contentType(ContentType.JSON)
+                .body(observation)
+                .when()
+                .post("/observation/add")
+                .then()
+                .statusCode(201)
+                .body(equalTo("Successfully added new Observation!"));
 
 
 

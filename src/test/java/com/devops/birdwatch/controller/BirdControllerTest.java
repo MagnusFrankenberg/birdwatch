@@ -38,7 +38,7 @@ public class BirdControllerTest {
 
         when(birdService.getAllBirds()).thenReturn(new ResponseEntity<>(birds, HttpStatus.OK));
 
-        mockMvc.perform(get("/snake/all"))
+        mockMvc.perform(get("/bird/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 

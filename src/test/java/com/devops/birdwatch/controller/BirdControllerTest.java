@@ -60,14 +60,16 @@ public class BirdControllerTest {
     @Test
     public void testAddBird() throws Exception {
         Bird bird = new Bird();
+        Bird savedBird = new Bird();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        when(birdService.addBird(bird)).thenReturn(new ResponseEntity<>("Successfully added", HttpStatus.CREATED));
+        when(birdService.addBird(bird)).thenReturn(new ResponseEntity<>(savedBird, HttpStatus.CREATED));
 
         mockMvc.perform(post("/bird/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bird)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(savedBird)));
     }
 
     @Test

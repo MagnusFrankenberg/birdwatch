@@ -36,13 +36,13 @@ public class BirdService {
         }
     }
 
-    public ResponseEntity<String> addBird(Bird bird) {
-        try{
-            birdRepository.save(bird);
-            return new ResponseEntity<>("Successfully added new Bird!",HttpStatus.CREATED);
-        }catch (Exception e){
+    public ResponseEntity<Bird> addBird(Bird bird) {
+        try {
+            Bird savedBird = birdRepository.save(bird);
+            return new ResponseEntity<>(savedBird, HttpStatus.CREATED);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Could not add new Bird",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -27,18 +27,18 @@ public class BirdWatcherService {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> addBirdWatcher(BirdWatcher birdWatcher) {
+    public ResponseEntity<BirdWatcher> addBirdWatcher(BirdWatcher birdWatcher) {
         try {
             Optional<BirdWatcher> birdWatcherOptional = birdWatcherRepository.findByEmail(birdWatcher.getEmail());
             if (birdWatcherOptional.isPresent()) {
-                return new ResponseEntity<>("email already taken", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             } else {
-                birdWatcherRepository.save(birdWatcher);
-                return new ResponseEntity<>("New BirdWatcher added successfully!", HttpStatus.CREATED);
+                BirdWatcher savedBirdWatcher = birdWatcherRepository.save(birdWatcher);
+                return new ResponseEntity<>(savedBirdWatcher, HttpStatus.CREATED);
             }
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>("Could not add new BirdWatcher", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 

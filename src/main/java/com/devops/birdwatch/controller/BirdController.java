@@ -31,7 +31,7 @@ public class BirdController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<String> addBird(@RequestBody Bird bird){
+    public ResponseEntity<Bird> addBird(@RequestBody Bird bird){
         return birdService.addBird(bird);
     }
 

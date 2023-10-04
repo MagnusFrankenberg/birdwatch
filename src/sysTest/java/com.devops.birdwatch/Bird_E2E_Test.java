@@ -20,32 +20,33 @@ public class Bird_E2E_Test {
 
 
     @Test
-    public void whenPostStatus201whenGetStatus200andCorrectData() {
+    public void addExpect201GetExpect200() {
         Bird bird = new Bird();
         bird.setSpeices("Testfågel");
         bird.setType("TestFågeltyp");
 
 
-       String responseBody = given()
+       Bird savedBird = given()
                 .contentType(ContentType.JSON)
                 .body(bird)
                 .when()
                 .post("/bird/add")
                 .then()
                 .statusCode(201)
-                .extract()
-                .asString();
-
-       assertEquals("Successfully added new Bird!", responseBody);
+                .extract().as(Bird.class);
 
 
-        given().pathParam("type", bird.getType())
+       assertEquals("Testfågel", savedBird.getSpeices());
+        assertEquals("TestFågeltyp", savedBird.getType());
+
+
+        given().pathParam("id", savedBird.getId())
                 .when()
-                .get("/bird/type/{type}")
+                .get("/bird/id/{id}")
                 .then()
                 .statusCode(200)
-                .body("[0].speices", equalTo("Testfågel"))
-                .body("[0].type", equalTo("TestFågeltyp"));
+                .body("speices", equalTo("Testfågel"))
+                .body("type", equalTo("TestFågeltyp"));
     }
 
 

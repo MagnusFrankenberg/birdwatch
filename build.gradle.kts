@@ -74,4 +74,40 @@ val integrationTest = task<Test>("integrationTest") {
 	}
 }
 
+sourceSets {
+	create("sysTest") {
+		compileClasspath += sourceSets.main.get().output
+		runtimeClasspath += sourceSets.main.get().output
+	}
+}
+
+val sysTestImplementation by configurations.getting {
+	extendsFrom(configurations.implementation.get())
+}
+val sysTestRuntimeOnly by configurations.getting
+
+configurations["sysTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+dependencies {
+	sysTestImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+	sysTestImplementation("org.springframework.boot:spring-boot-starter-test")
+	sysTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	sysTestImplementation("io.rest-assured:rest-assured:5.3.2")
+}
+
+val systemTest = task<Test>("systemTest") {
+	description = "Runs system tests."
+	group = "verification"
+
+	testClassesDirs = sourceSets["sysTest"].output.classesDirs
+	classpath = sourceSets["sysTest"].runtimeClasspath
+	shouldRunAfter("integrationTest")
+
+	useJUnitPlatform()
+
+	testLogging {
+		events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
+	}
+}
+
 

@@ -29,7 +29,7 @@ public class BirdRepositoryIntegrationTest {
 
         assertTrue(retrievedBird.isPresent());
         assertEquals("Pärluggla",retrievedBird.get().getSpeices());
-        assertEquals("Uggla",retrievedBird.get().getType());
+        assertEquals("Pingvin",retrievedBird.get().getType());
     }
 }
 

@@ -8,5 +8,6 @@ public class WelcomeController {
     @GetMapping("welcome")
     public String welcome(){
         return "Welcome to BirdWatch!";
+        //Hej, Hej från master
     }
 }

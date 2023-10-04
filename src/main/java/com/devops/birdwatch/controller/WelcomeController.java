@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class WelcomeController {
     @GetMapping("welcome")
     public String welcome(){
-        return "Welcome to BirdWatch!";
+        return "Welcome to masterBranch!";
     }
 }

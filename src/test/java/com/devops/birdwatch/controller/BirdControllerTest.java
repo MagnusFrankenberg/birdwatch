@@ -45,6 +45,20 @@ public class BirdControllerTest {
 
   }
 
+  @Test
+  public void testGetBirdsById() throws Exception {
+    Bird bird1 = new Bird();
+    Long birdId = 1L;
+    bird1.setId(birdId);
+
+    when(birdService.getBirdById(birdId)).thenReturn(
+        new ResponseEntity<>(bird1, HttpStatus.OK));
+
+    mockMvc.perform(get("/bird/id/1"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+  }
+
 
   @Test
   public void testGetBirdsByType() throws Exception {

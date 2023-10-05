@@ -2,6 +2,24 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.1.4"
 	id("io.spring.dependency-management") version "1.1.3"
+	checkstyle
+	jacoco
+}
+
+
+checkstyle{
+	configFile = file("${project.rootDir}/config/checkstyle/google_checks.xml")
+	toolVersion = "10.12.4"
+	reportsDir = file("${project.buildDir}/checkstyle")
+	isShowViolations = true;
+	//maxWarnings = 1;
+	//maxErrors = 1;
+}
+tasks.withType<Checkstyle>().configureEach {
+	reports {
+		xml.required = false
+		html.required = true
+	}
 }
 
 group = "com.devops"
@@ -15,6 +33,7 @@ configurations {
 	compileOnly {
 		extendsFrom(configurations.annotationProcessor.get())
 	}
+
 }
 
 repositories {
@@ -36,7 +55,10 @@ tasks.withType<Test> {
 	testLogging {
 		events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
 	}
+
 }
+
+
 
 sourceSets {
 	create("intTest") {
@@ -109,5 +131,10 @@ val systemTest = task<Test>("systemTest") {
 		events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
 	}
 }
+
+
+
+
+
 
 

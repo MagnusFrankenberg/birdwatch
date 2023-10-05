@@ -18,7 +18,7 @@ Navigate to projectfolder /birdwatch
 
 4. Run integration tests:
    Navigate to projectfolder /birdwatch
-   ./gradlew integ./rationTest
+   ./gradlew integrationTest
 
 5. Run system tests (need to detach or run test from 2nd terminal):
    a. build jar: ./gradlew build -x test 
@@ -38,9 +38,21 @@ Navigate to projectfolder /birdwatch
       http://localhost:8080/bird/all
       http://localhost:8080/bird/type/Rovfågel
       http://localhost:8080/birdwatcher/all
-      http://localhost:8080/birdwatcher/all
+      http://localhost:8080/observation/all
 
 9. Use requestTemplates.http to make manual REST testing for endpoints
+
+***Checkstyle Commands***
+./gradlew checkstyleMain
+./gradlew checkstyleTest
+./gradlew checkstyleintTest
+./gradlew checkstylesysTest
+
+***jacoco***
+Create the Jacoco code coverage reports
+(build/reports/jacoco/test)
+./gradlew jacocoTestReport
+
 
 ****Github Commands***
 

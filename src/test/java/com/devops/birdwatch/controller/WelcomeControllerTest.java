@@ -1,14 +1,15 @@
 package com.devops.birdwatch.controller;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class WelcomeControllerTest {
 
-    WelcomeController welcomeController = new WelcomeController();
-    @Test
-    void welcome() {
-        assertEquals("Welcome to BirdWatch!",welcomeController.welcome());
-    }
+  WelcomeController welcomeController = new WelcomeController();
+
+  @Test
+  void welcome() {
+    assertEquals("Welcome to BirdWatch!", welcomeController.welcome());
+  }
 }

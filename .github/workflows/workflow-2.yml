@@ -1,0 +1,21 @@
+
+name: Checkstyle Workflow
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest checkstyleintTest checkstylesysTest

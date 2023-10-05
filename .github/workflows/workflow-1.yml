@@ -1,14 +1,14 @@
 name: CI/CD pipeline test & production
 
-on:
-  push:
-    branches:
-      - master
-      - '*'
-  pull_request:
-    branches:
-      - master
-
+#on:
+#  push:
+#    branches:
+#      - master
+#      - '*'
+#  pull_request:
+#    branches:
+#      - master
+#
 
 # Set environment variables for pushing Docker image to GitHub Container Registry .
 env:
@@ -275,3 +275,4 @@ jobs:
         run: |
           echo "Deploying to Test"
           echo ${{needs.publish.outputs.tag}}
+          

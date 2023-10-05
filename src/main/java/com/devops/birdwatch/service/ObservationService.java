@@ -23,59 +23,65 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ObservationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ObservationService.class);
+  private static final Logger logger = LoggerFactory.getLogger(ObservationService.class);
 
-    @Autowired
-    ObservationRepository observationRepository;
-    @Autowired
-    BirdRepository birdRepository;
-    @Autowired
-    BirdWatcherRepository birdWatcherRepository;
+  @Autowired
+  ObservationRepository observationRepository;
+  @Autowired
+  BirdRepository birdRepository;
+  @Autowired
+  BirdWatcherRepository birdWatcherRepository;
 
 
-    public ResponseEntity<ObservationResponse> addObservation(ObservationTemplate template) {
-        try {
-            Bird bird = birdRepository.findBySpeices(template.getSpeices())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bird species not found, please register the bird species"));
+  public ResponseEntity<ObservationResponse> addObservation(ObservationTemplate template) {
+    try {
+      Bird bird = birdRepository.findBySpeices(template.getSpeices())
+          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+              "Bird species not found, please register the bird species"));
 
-            BirdWatcher birdWatcher = birdWatcherRepository.findByEmail(template.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found, please check if registered or spelled incorrectly"));
+      BirdWatcher birdWatcher = birdWatcherRepository.findByEmail(template.getEmail())
+          .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+              "Email not found, please check if registered or spelled incorrectly"));
 
-            Observation observation = new Observation(template.getObservationDate(), template.getLocation(), template.getCountry(), bird, birdWatcher);
-            Observation savedObservation = observationRepository.save(observation);
+      Observation observation = new Observation(template.getObservationDate(),
+          template.getLocation(), template.getCountry(), bird, birdWatcher);
+      Observation savedObservation = observationRepository.save(observation);
 
-            return new ResponseEntity<>(new ObservationResponse(savedObservation, "Successfully added new Observation!"), HttpStatus.CREATED);
+      return new ResponseEntity<>(
+          new ObservationResponse(savedObservation, "Successfully added new Observation!"),
+          HttpStatus.CREATED);
 
-        } catch (ResponseStatusException rse) {
-            return new ResponseEntity<>(new ObservationResponse(null, rse.getReason()), rse.getStatusCode());
-        } catch (Exception e) {
-            logger.error("Error adding observation", e);
-            return new ResponseEntity<>(new ObservationResponse(null, "Could not add new Observation"), HttpStatus.BAD_REQUEST);
-        }
+    } catch (ResponseStatusException rse) {
+      return new ResponseEntity<>(new ObservationResponse(null, rse.getReason()),
+          rse.getStatusCode());
+    } catch (Exception e) {
+      logger.error("Error adding observation", e);
+      return new ResponseEntity<>(new ObservationResponse(null, "Could not add new Observation"),
+          HttpStatus.BAD_REQUEST);
     }
+  }
 
 
-    public ResponseEntity<Observation> getObservationById(Long id) {
-        Optional<Observation> optionalObservation = observationRepository.findById(id);
+  public ResponseEntity<Observation> getObservationById(Long id) {
+    Optional<Observation> optionalObservation = observationRepository.findById(id);
 
-        if (optionalObservation.isPresent()) {
-            return new ResponseEntity<>(optionalObservation.get(), HttpStatus.OK);
-        } else {
-            logger.warn("No observation found for ID: {}", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    if (optionalObservation.isPresent()) {
+      return new ResponseEntity<>(optionalObservation.get(), HttpStatus.OK);
+    } else {
+      logger.warn("No observation found for ID: {}", id);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+  }
 
 
-
-    public ResponseEntity<List<Observation>> getAllObservations() {
-        try{
-            return new ResponseEntity<>(observationRepository.findAll(), HttpStatus.OK);
-        }catch (Exception e){
-            logger.error("Failed to retrieve all observations", e);
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
-        }
+  public ResponseEntity<List<Observation>> getAllObservations() {
+    try {
+      return new ResponseEntity<>(observationRepository.findAll(), HttpStatus.OK);
+    } catch (Exception e) {
+      logger.error("Failed to retrieve all observations", e);
+      return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
+  }
 
 
 }

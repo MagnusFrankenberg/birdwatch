@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-public class Bird_E2E_Test {
+public class BirdSystemTest {
 
   @BeforeEach
   public void setUpClass() {

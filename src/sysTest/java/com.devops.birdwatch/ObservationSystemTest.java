@@ -1,10 +1,10 @@
 package com.devops.birdwatch;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
 import com.devops.birdwatch.model.Bird;
 import com.devops.birdwatch.model.BirdWatcher;
+import com.devops.birdwatch.model.ObservationResponse;
 import com.devops.birdwatch.model.ObservationTemplate;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -12,10 +12,11 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class Observation_E2E_Test {
+public class ObservationSystemTest {
 
   Bird savedBird;
   BirdWatcher savedBirdWatcher;
+  ObservationResponse observationResponse;
 
   @BeforeEach
   public void setUpClass() {
@@ -23,7 +24,7 @@ public class Observation_E2E_Test {
   }
 
   @Test
-  public void E2E_addObservationAndExpect201() {
+  public void sysTestAddObservationAndExpect201() {
 
     //Creating a bird
     Bird bird = new Bird();
@@ -62,14 +63,16 @@ public class Observation_E2E_Test {
     observationTemplate.setSpeices("FågelArt1");
     observationTemplate.setEmail("epost@adress2.se");
 
-    given()
+    observationResponse = given()
         .contentType(ContentType.JSON)
         .body(observationTemplate)
         .when()
         .post("/observation/add")
         .then()
         .statusCode(201)
-        .body(equalTo("Successfully added new Observation!"));
+        .extract().as(ObservationResponse.class);
+
   }
+
 
 }

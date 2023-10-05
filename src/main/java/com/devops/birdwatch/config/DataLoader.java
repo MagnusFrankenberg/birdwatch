@@ -1,18 +1,18 @@
 package com.devops.birdwatch.config;
 
+import com.devops.birdwatch.model.Bird;
 import com.devops.birdwatch.model.BirdWatcher;
 import com.devops.birdwatch.model.Observation;
-import com.devops.birdwatch.repository.ObservationRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.devops.birdwatch.model.Bird;
 import com.devops.birdwatch.repository.BirdRepository;
 import com.devops.birdwatch.repository.BirdWatcherRepository;
+import com.devops.birdwatch.repository.ObservationRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
+import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.InputStream;
-import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {

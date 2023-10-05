@@ -40,13 +40,13 @@ public class ObservationServiceLayerIntegrationTest {
     Bird bird = new Bird();
     bird.setSpeices("Testfågel");
     bird.setType("TestFågeltyp");
-    Bird savedBird = birdRepository.save(bird);
+    final Bird savedBird = birdRepository.save(bird);
 
     BirdWatcher birdWatcher = new BirdWatcher();
     birdWatcher.setFirstName("Fågel");
     birdWatcher.setLastName("Fenix");
     birdWatcher.setEmail("fenix@birdmail.com");
-    BirdWatcher savedBirdWatcher = birdWatcherRepository.save(birdWatcher);
+    final BirdWatcher savedBirdWatcher = birdWatcherRepository.save(birdWatcher);
 
     Observation observation = new Observation();
 

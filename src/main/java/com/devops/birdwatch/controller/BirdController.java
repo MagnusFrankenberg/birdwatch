@@ -2,11 +2,10 @@ package com.devops.birdwatch.controller;
 
 import com.devops.birdwatch.model.Bird;
 import com.devops.birdwatch.service.BirdService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("bird")

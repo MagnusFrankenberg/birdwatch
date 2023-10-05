@@ -47,6 +47,7 @@ Navigate to projectfolder /birdwatch
 ./gradlew checkstyleTest
 ./gradlew checkstyleintTest
 ./gradlew checkstylesysTest
+./gradlew checkstyleMain checkstyleTest checkstyleintTest checkstylesysTest
 
 ***jacoco***
 Create the Jacoco code coverage reports

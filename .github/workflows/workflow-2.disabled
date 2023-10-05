@@ -1,5 +1,5 @@
 
-name: Checkstyle Workflow
+name: Checkstyle
 
 on: [push, pull_request]
 

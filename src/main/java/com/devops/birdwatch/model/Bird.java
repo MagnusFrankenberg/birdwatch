@@ -10,10 +10,10 @@ import lombok.Data;
 @Entity
 public class Bird {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String speices;
-    private String type;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String speices;
+  private String type;
 
 }

@@ -82,6 +82,4 @@ public class ObservationService {
       return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }

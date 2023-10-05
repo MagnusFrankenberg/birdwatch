@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface BirdRepository extends JpaRepository<Bird, Long> {
 
-    List<Bird> findByType(String type);
-    Optional<Bird> findBySpeices(String speices);
+  List<Bird> findByType(String type);
+
+  Optional<Bird> findBySpeices(String speices);
 }

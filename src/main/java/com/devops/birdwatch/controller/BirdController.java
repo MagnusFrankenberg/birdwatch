@@ -12,33 +12,33 @@ import java.util.List;
 @RequestMapping("bird")
 public class BirdController {
 
-    @Autowired
-    BirdService birdService;
+  @Autowired
+  BirdService birdService;
 
-    @GetMapping("all")
-    public ResponseEntity<List<Bird>> getAllBirds(){
-        return birdService.getAllBirds();
-    }
+  @GetMapping("all")
+  public ResponseEntity<List<Bird>> getAllBirds() {
+    return birdService.getAllBirds();
+  }
 
-    @GetMapping("id/{id}")
-    public ResponseEntity<Bird> getBirdById(@PathVariable Long id){
-        return birdService.getBirdById(id);
-    }
+  @GetMapping("id/{id}")
+  public ResponseEntity<Bird> getBirdById(@PathVariable Long id) {
+    return birdService.getBirdById(id);
+  }
 
-    @GetMapping("type/{type}")
-    public ResponseEntity<List<Bird>> getBirdsByType(@PathVariable String type){
-        return birdService.getBirdsByType(type);
-    }
+  @GetMapping("type/{type}")
+  public ResponseEntity<List<Bird>> getBirdsByType(@PathVariable String type) {
+    return birdService.getBirdsByType(type);
+  }
 
-    @PostMapping("add")
-    public ResponseEntity<Bird> addBird(@RequestBody Bird bird){
-        return birdService.addBird(bird);
-    }
+  @PostMapping("add")
+  public ResponseEntity<Bird> addBird(@RequestBody Bird bird) {
+    return birdService.addBird(bird);
+  }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteBird(@PathVariable Long id){
-        return birdService.deleteBird(id);
-    }
+  @DeleteMapping("delete/{id}")
+  public ResponseEntity<String> deleteBird(@PathVariable Long id) {
+    return birdService.deleteBird(id);
+  }
 
 
 }

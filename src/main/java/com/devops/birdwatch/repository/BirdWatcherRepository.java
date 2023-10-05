@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface BirdWatcherRepository extends JpaRepository<BirdWatcher,Long> {
+public interface BirdWatcherRepository extends JpaRepository<BirdWatcher, Long> {
 
-    Optional<BirdWatcher> findByEmail (String email);
+  Optional<BirdWatcher> findByEmail(String email);
 }

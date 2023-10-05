@@ -14,23 +14,24 @@ import java.util.List;
 @RequestMapping("observation")
 public class ObservationController {
 
-    @Autowired
-    ObservationService observationService;
+  @Autowired
+  ObservationService observationService;
 
-    @PostMapping("add")
-    public ResponseEntity<ObservationResponse> addObservation(@RequestBody ObservationTemplate observationTemplate){
-        return observationService.addObservation(observationTemplate);
-    }
+  @PostMapping("add")
+  public ResponseEntity<ObservationResponse> addObservation(
+      @RequestBody ObservationTemplate observationTemplate) {
+    return observationService.addObservation(observationTemplate);
+  }
 
-    @GetMapping("id/{id}")
-    public ResponseEntity<Observation> getObservationById(@PathVariable Long id){
-        return observationService.getObservationById(id);
-    }
+  @GetMapping("id/{id}")
+  public ResponseEntity<Observation> getObservationById(@PathVariable Long id) {
+    return observationService.getObservationById(id);
+  }
 
-    @GetMapping("all")
-    public ResponseEntity<List<Observation>> getAllObservations(){
-        return observationService.getAllObservations();
-    }
+  @GetMapping("all")
+  public ResponseEntity<List<Observation>> getAllObservations() {
+    return observationService.getAllObservations();
+  }
 
 
 }

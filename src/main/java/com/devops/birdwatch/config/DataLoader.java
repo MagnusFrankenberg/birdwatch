@@ -17,29 +17,36 @@ import java.util.List;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    private final BirdRepository birdRepository;
-    private final BirdWatcherRepository birdWatcherRepository;
-    private final ObservationRepository observationRepository;
-    private final ObjectMapper objectMapper;
+  private final BirdRepository birdRepository;
+  private final BirdWatcherRepository birdWatcherRepository;
+  private final ObservationRepository observationRepository;
+  private final ObjectMapper objectMapper;
 
-    public DataLoader(BirdRepository birdRepository, BirdWatcherRepository birdWatcherRepository, ObservationRepository observationRepository, ObjectMapper objectMapper) {
-        this.birdRepository = birdRepository;
-        this.birdWatcherRepository = birdWatcherRepository;
-        this.observationRepository = observationRepository;
-        this.objectMapper = objectMapper;
+  public DataLoader(BirdRepository birdRepository, BirdWatcherRepository birdWatcherRepository,
+      ObservationRepository observationRepository, ObjectMapper objectMapper) {
+    this.birdRepository = birdRepository;
+    this.birdWatcherRepository = birdWatcherRepository;
+    this.observationRepository = observationRepository;
+    this.objectMapper = objectMapper;
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+    try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/birds.json")) {
+      birdRepository.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Bird>>() {
+      }));
     }
-
-    @Override
-    public void run(String...args) throws Exception{
-        try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/birds.json")){
-            birdRepository.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Bird>>(){}));
-        }
-        try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/birdwatchers.json")){
-            birdWatcherRepository.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<BirdWatcher>>(){}));
-        }
-        try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/observations.json")){
-            observationRepository.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Observation>>(){}));
-        }
-
+    try (InputStream inputStream = TypeReference.class.getResourceAsStream(
+        "/data/birdwatchers.json")) {
+      birdWatcherRepository.saveAll(
+          objectMapper.readValue(inputStream, new TypeReference<List<BirdWatcher>>() {
+          }));
     }
+    try (InputStream inputStream = TypeReference.class.getResourceAsStream(
+        "/data/observations.json")) {
+      observationRepository.saveAll(
+          objectMapper.readValue(inputStream, new TypeReference<List<Observation>>() {
+          }));
+    }
+  }
 }

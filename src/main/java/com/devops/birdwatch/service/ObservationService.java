@@ -3,20 +3,21 @@ package com.devops.birdwatch.service;
 import com.devops.birdwatch.model.Bird;
 import com.devops.birdwatch.model.BirdWatcher;
 import com.devops.birdwatch.model.Observation;
+import com.devops.birdwatch.model.ObservationResponse;
 import com.devops.birdwatch.model.ObservationTemplate;
 import com.devops.birdwatch.repository.BirdRepository;
 import com.devops.birdwatch.repository.BirdWatcherRepository;
 import com.devops.birdwatch.repository.ObservationRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -31,34 +32,28 @@ public class ObservationService {
     @Autowired
     BirdWatcherRepository birdWatcherRepository;
 
-    public ResponseEntity<String> addObservation(ObservationTemplate template) {
-        Optional<Bird> birdOptional;
-        Optional<BirdWatcher> birdWatcherOptional;
-        Observation observation;
 
-
-
+    public ResponseEntity<ObservationResponse> addObservation(ObservationTemplate template) {
         try {
-            birdOptional = birdRepository.findBySpeices(template.getSpeices());
-            if (!birdOptional.isPresent()) {
-                return new ResponseEntity<>("Bird speices not found, please register bird speices", HttpStatus.NOT_FOUND);
-            }
-            birdWatcherOptional = birdWatcherRepository.findByEmail(template.getEmail());
-            if (!birdWatcherOptional.isPresent()) {
-                return new ResponseEntity<>("Email not found, please check if registered or spelled incorrectly", HttpStatus.BAD_REQUEST);
-            }
+            Bird bird = birdRepository.findBySpeices(template.getSpeices())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bird species not found, please register the bird species"));
 
-            observation = new Observation(template.getObservationDate(), template.getLocation(), template.getCountry(),
-                    birdOptional.get(), birdWatcherOptional.get());
-            observationRepository.save(observation);
+            BirdWatcher birdWatcher = birdWatcherRepository.findByEmail(template.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found, please check if registered or spelled incorrectly"));
 
-            return new ResponseEntity<>("Successfully added new Observation!", HttpStatus.CREATED);
+            Observation observation = new Observation(template.getObservationDate(), template.getLocation(), template.getCountry(), bird, birdWatcher);
+            Observation savedObservation = observationRepository.save(observation);
 
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>("Could not add new Observation", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ObservationResponse(savedObservation, "Successfully added new Observation!"), HttpStatus.CREATED);
+
+        } catch (ResponseStatusException rse) {
+            return new ResponseEntity<>(new ObservationResponse(null, rse.getReason()), rse.getStatusCode());
+        } catch (Exception e) {
+            logger.error("Error adding observation", e);
+            return new ResponseEntity<>(new ObservationResponse(null, "Could not add new Observation"), HttpStatus.BAD_REQUEST);
         }
     }
+
 
     public ResponseEntity<Observation> getObservationById(Long id) {
         Optional<Observation> optionalObservation = observationRepository.findById(id);

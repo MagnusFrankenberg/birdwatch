@@ -6,7 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devops.birdwatch.model.Observation;
+import com.devops.birdwatch.model.ObservationResponse;
+import com.devops.birdwatch.model.ObservationTemplate;
 import com.devops.birdwatch.service.ObservationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(ObservationController.class)
 class ObservationControllerTest {
@@ -35,17 +39,29 @@ class ObservationControllerTest {
     observation.setId(observationId);
 
     when(observationService.getObservationById(observationId)).thenReturn(
-        new ResponseEntity<>(observation,HttpStatus.OK));
+        new ResponseEntity<>(observation, HttpStatus.OK));
 
     mockMvc.perform(get("/observation/id/1"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
 
   @Test
-  void testAddObservation() {
+  void testAddObservation() throws Exception {
+    ObservationTemplate observationTemplate = new ObservationTemplate();
+    ObservationResponse observationResponse = new ObservationResponse(new Observation(), "Success");
+    ObjectMapper objectMapper = new ObjectMapper();
 
+    when(observationService.addObservation(observationTemplate)).thenReturn(
+        new ResponseEntity<>(observationResponse, HttpStatus.CREATED));
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/observation/add")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(observationTemplate)))
+        .andExpect(status().isCreated())
+        .andExpect(content().json(objectMapper.writeValueAsString(observationResponse)));
   }
+
 
   @Test
   void testGetAllObservations() throws Exception {

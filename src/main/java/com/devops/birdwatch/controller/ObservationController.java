@@ -1,6 +1,7 @@
 package com.devops.birdwatch.controller;
 
 import com.devops.birdwatch.model.Observation;
+import com.devops.birdwatch.model.ObservationResponse;
 import com.devops.birdwatch.model.ObservationTemplate;
 import com.devops.birdwatch.service.ObservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class ObservationController {
     ObservationService observationService;
 
     @PostMapping("add")
-    public ResponseEntity<String> addObservation(@RequestBody ObservationTemplate observationTemplate){
+    public ResponseEntity<ObservationResponse> addObservation(@RequestBody ObservationTemplate observationTemplate){
         return observationService.addObservation(observationTemplate);
     }
 

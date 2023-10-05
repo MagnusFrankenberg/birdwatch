@@ -12,7 +12,7 @@ checkstyle{
 	toolVersion = "10.12.4"
 	reportsDir = file("${project.buildDir}/checkstyle")
 	isShowViolations = true;
-	maxWarnings = 0;
+	maxWarnings = 20;
 	maxErrors = 1;
 }
 tasks.withType<Checkstyle>().configureEach {

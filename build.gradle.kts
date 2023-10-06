@@ -12,7 +12,7 @@ checkstyle{
 	toolVersion = "10.12.4"
 	reportsDir = file("${project.buildDir}/checkstyle")
 	isShowViolations = true;
-	maxWarnings = 20;
+	maxWarnings = 10;
 	maxErrors = 1;
 }
 tasks.withType<Checkstyle>().configureEach {
@@ -55,7 +55,7 @@ tasks.withType<Test> {
 	testLogging {
 		events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
 	}
-
+	finalizedBy(tasks.jacocoTestReport)
 }
 
 

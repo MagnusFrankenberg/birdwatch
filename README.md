@@ -1,9 +1,13 @@
 ***Build, run app and run tests***
 
 1. Pull MYSQL image:
+```bash
 docker pull mysql/mysql-server:8.0.25
+```
 
 2. Start the MySQL Container:
+
+```bash
 docker run --name MysqlDB \
 -e MYSQL_ROOT_PASSWORD=rootpw123 \
 -e MYSQL_DATABASE=birdwatchdb \
@@ -11,28 +15,52 @@ docker run --name MysqlDB \
 -e MYSQL_PASSWORD=birdpassword \
 -p 3306:3306 \
 -d mysql/mysql-server:8.0.25
+```
 
 3. Run unit tests:
 Navigate to projectfolder /birdwatch
+```bash
 ./gradlew test
+```
 
 4. Run integration tests:
    Navigate to projectfolder /birdwatch
+```bash
    ./gradlew integrationTest
+```
 
 5. Run system tests (need to detach or run test from 2nd terminal):
-   a. build jar: ./gradlew build -x test 
-   b. run jar: java -jar build/libs/birdwatch-0.0.1-SNAPSHOT.jar
-   c. run system tests: ./gradlew systemTest
+   a. build jar:
+```bash
+./gradlew build -x test
+```
+   b. run jar: 
+```bash
+java -jar build/libs/birdwatch-0.0.1-SNAPSHOT.jar
+```
+   c. run system tests: 
+```bash
+./gradlew systemTest
+```
 
 6. Build jar:
    Navigate to projectfolder /birdwatch
-   build jar: ./gradlew build
+   build jar:
+```bash
+./gradlew build
+```
 
 7. Start Application & Database with Docker compose:
-   a. Make sure nothing is running on port 3306: netstat -tuln | grep 3306 (should return nothing)
+   a. Make sure nothing is running on port 3306: (should return nothing)
+```bash
+netstat -tuln | grep 3306 
+```
+
    b. Navigate to projectfolder /birdwatch
-   c. Run docker compose: docker-compose up
+   c. Run docker compose: 
+```bash
+   docker-compose up
+```
 
 8.    Test different URLs in the webbrowser when running application:
       http://localhost:8080/bird/all
@@ -43,17 +71,20 @@ Navigate to projectfolder /birdwatch
 9. Use requestTemplates.http to make manual REST testing for endpoints
 
 ***Checkstyle Commands***
+```bash
 ./gradlew checkstyleMain
 ./gradlew checkstyleTest
 ./gradlew checkstyleintTest
 ./gradlew checkstylesysTest
 ./gradlew checkstyleMain checkstyleTest checkstyleintTest checkstylesysTest
+```
 
 ***jacoco***
 Create the Jacoco code coverage reports
 (build/reports/jacoco/test)
+```bash
 ./gradlew jacocoTestReport
-
+```
 
 ****Github Commands***
 
